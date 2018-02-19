@@ -20,7 +20,12 @@ namespace HelloMVC.Controllers
 
         };
 
-        private static int Counter = 0;
+
+
+        private static int TotalCounter = 0;
+
+        
+        
 
         public string CreateMessage(string name, string language)
         {
@@ -34,11 +39,21 @@ namespace HelloMVC.Controllers
         }
 
         [HttpPost] // form submit POST 
-        [Route("home/greeting")] // absolute path 
+        [Route("home/")] // absolute path 
         public IActionResult Greeting(string name, string language)
         {
+
+            // this is a ternary statement. it reads left to right "if true ? do this : else do this"
+            // if the user has a cookie containing the "counter" field then set the userCounter variable to its value
+            // else set the value = 0
+            int userCounter = Request.Cookies.ContainsKey("counter") ? int.Parse(Request.Cookies["counter"]) : 0;
+            // increment and return the userCounter value. storing the returned counter value in the ViewBag
+            ViewBag.userCounter = ++userCounter;
+            // append a cookie with a "counter" field to the Response. set its value to the (now incremented) userCounter variable
+            Response.Cookies.Append("counter", userCounter.ToString());
             ViewBag.greetingMessage = CreateMessage(name, language);
-            ViewBag.counter = ++Counter;
+            ViewBag.Totalcounter = ++TotalCounter;
+            
             return View(); 
             
 
